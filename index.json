@@ -1,0 +1,26 @@
+{
+    "Prologue" : {
+        "start" : 6,
+        "end" : 8
+    },
+    "Part 1: Going Up" : {
+        "start" : 11,
+        "end" : 56
+    },
+    "Part 2: You Want Some?" : {
+        "start" : 58,
+        "end" : 148
+    },
+    "Part 3: Go Home And Ask Your Mum" : {
+        "start" : 150,
+        "end" : 185
+    },
+    "Part 4: Thermostat" : {
+        "start" : 187,
+        "end" : 255
+    },
+    "Part 5: Going Down" : {
+        "start" : 257,
+        "end" : 353
+    }
+}
