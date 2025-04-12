@@ -2,6 +2,8 @@
 
 Project to convert a PDF given by the user to an audiobook.
 
+Tested on 64-bit AMD64 CPU with 16GB RAM
+
 Python version:
 3.12.1
 
