@@ -12,3 +12,9 @@ https://pytorch.org/
 
 TTS:
 https://huggingface.co/suno/bark
+
+Before running `python3 tts`:
+>>> python3
+>>> from huggingface_hub import login
+>>> login()
+<Enter hugging face token>

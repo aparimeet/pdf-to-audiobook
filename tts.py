@@ -7,13 +7,12 @@ import torch
 pipeline = KPipeline(lang_code='a') # <= make sure lang_code matches voice, reference above.
 
 # This text is for demonstration purposes only, unseen during training
-text = '''
-The sky above the port was the color of television, tuned to a dead channel.
-'''
+with open("parsed_text/Prologue_cp.txt", "r") as f:
+    text = f.read()
 # Generate, display, and save audio files in a loop.
 generator = pipeline(
     text, voice='af_heart', # <= change voice here
-    speed=1, split_pattern=r'\n+'
+    speed=1
 )
 # Alternatively, load voice tensor directly:
 # voice_tensor = torch.load('path/to/voice.pt', weights_only=True)
@@ -27,4 +26,4 @@ for i, (gs, ps, audio) in enumerate(generator):
     print(gs) # gs => graphemes/text
     print(ps) # ps => phonemes
     display(Audio(data=audio, rate=24000, autoplay=i==0))
-    sf.write(f'{i}.wav', audio, 24000) # save each audio file
+    sf.write(f'Prologue/{i}.wav', audio, 24000) # save each audio file
