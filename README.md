@@ -18,3 +18,6 @@ Before running `python3 tts`:
 >>> from huggingface_hub import login
 >>> login()
 <Enter hugging face token>
+
+Stich together the wav files using:
+https://ffmpeg.org/
