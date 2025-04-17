@@ -19,5 +19,5 @@ Before running `python3 tts`:
 >>> login()
 <Enter hugging face token>
 
-Stich together the wav files using:
+Stitch together the wav files using:
 https://ffmpeg.org/
