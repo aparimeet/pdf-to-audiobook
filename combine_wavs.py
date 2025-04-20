@@ -1,21 +1,35 @@
 import os
 import subprocess
 
-def create_file_for_ffmpeg(root_path, section_path):
+def create_file_for_ffmpeg(audio_path):
+    if not os.path.isdir("audio_files"):
+        os.mkdir("audio_files")
     # Sort the files based on the numbers in their filename
-    files = sorted(os.listdir(path + "/Prologue"), key=lambda x: int(x.split(".")[0]))
-    print(files)
+    for file in os.listdir(audio_path):
+        if not os.path.isdir(f"audio_files/{file}"):
+            os.mkdir(f"audio_files/{file}")
+        wavs = sorted(os.listdir(audio_path + "/" + file), key=lambda x: int(x.split(".")[0]))
+    
+        with open("audio_files"+"/"+file+"/files.txt", "w+") as f:
+            for wav in wavs:
+                f.write(f"file 'audio/{file}/{wav}'\n")
 
-    with open(section_path+"/files.txt", "a") as f:
-        for file in files:
-            f.write(f"file '{file}'\n")
+def combine_wavs(path):
+    for file in os.listdir(path + "/audio_files"):
+        section = path + "/audio_files" + "/" + file
+        subprocess.run(["ffmpeg", "-f", "concat", "-safe", "0", "-i", section + "/" + "files.txt", "-c", "copy", section + "/" + "output.wav"])
 
-def combine_wavs(filename, file_path):
-    subprocess.run(["ffmpeg", "-f", "concat", "-safe", "0", "-i", section_path + "/" + filename, "-c", "copy", section_path + "/" + "output.wav"])
+def combine_combined_wavs(audio_path):
+    with open("output.txt", "w+") as f:
+        for file in os.listdir(audio_path):
+            f.write(f"file 'audio_files/{file}/output.wav'\n")
+    subprocess.run(["ffmpeg", "-f", "concat", "-safe", "0", "-i", "output.txt", "-c", "copy", "audiobook.wav"])
+
 
 if __name__ == "__main__":
     path = os.getcwd()
     print(f"{path = }")
-    section_path = path + "/Prologue"
-    create_file_for_ffmpeg(path, section_path)
-    combine_wavs("files.txt", section_path)
+    audio_path = path + "/audio"
+    create_file_for_ffmpeg(audio_path)
+    combine_wavs(path)
+    #combine_combined_wavs(audio_path)
