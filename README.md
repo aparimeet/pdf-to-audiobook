@@ -1,23 +1,37 @@
-# pdf-to-audiobook
+# PDF to Audiobook
 
-Project to convert a PDF given by the user to an audiobook.
+A project to convert PDFs into audiobooks using text-to-speech technology.
 
-Tested on 64-bit AMD64 CPU with 16GB RAM
+## System Requirements
 
-Python version:
-3.12.1
+- **CPU**: Tested on 64-bit AMD64 CPU with 16GB RAM
+- **Python**: Version 3.12.1
 
-Install Pytorch:
-https://pytorch.org/
+## Installation
 
-TTS:
-https://huggingface.co/suno/bark
+### 1. Install PyTorch
+Visit [PyTorch official website](https://pytorch.org/) for installation instructions.
 
-Before running `python3 tts`:
->>> python3
+### 2. Install Text-to-Speech Model
+This project uses the [Suno Bark TTS model](https://huggingface.co/suno/bark) from Hugging Face.
+
+### 3. Hugging Face Authentication
+Before running the TTS script, you need to authenticate with Hugging Face:
+
+```python
+python3
 >>> from huggingface_hub import login
 >>> login()
-<Enter hugging face token>
+# Enter your Hugging Face token when prompted
+```
 
-Stitch together the wav files using:
-https://ffmpeg.org
+## Audio Processing
+
+To stitch together the generated WAV files, install [FFmpeg](https://ffmpeg.org/).
+
+## Usage
+
+Run the TTS conversion:
+```bash
+python3 tts.py
+```
