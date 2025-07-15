@@ -1,0 +1,2 @@
+PARSED_TEXT_FOLDER_NAME = "parsed_text"
+AUDIO_CHUNKS_FOLDER_NAME = "audio_chunks"

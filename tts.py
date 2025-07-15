@@ -4,6 +4,7 @@ from IPython.display import display, Audio
 import soundfile as sf
 import torch
 import os
+from constants import AUDIO_CHUNKS_FOLDER_NAME
 
 # 🇺🇸 'a' => American English, 🇬🇧 'b' => British English
 pipeline = KPipeline(lang_code='a') # <= make sure lang_code matches voice, reference above.
@@ -22,10 +23,10 @@ for file in files:
         speed=1
     )
 
-    os.mkdir(curr_dir + "/audio/" + filename_wo_extension)
+    os.mkdir(curr_dir + f"/{AUDIO_CHUNKS_FOLDER_NAME}/" + filename_wo_extension)
     for i, (gs, ps, audio) in enumerate(generator):
         print(i)  # i => index
         print(gs) # gs => graphemes/text
         print(ps) # ps => phonemes
         display(Audio(data=audio, rate=24000, autoplay=i==0))
-        sf.write(f'{curr_dir}/audio/{filename_wo_extension}/{i}.wav', audio, 24000) # save each audio file
+        sf.write(f'{curr_dir}/{AUDIO_CHUNKS_FOLDER_NAME}/{filename_wo_extension}/{i}.wav', audio, 24000) # save each audio file
