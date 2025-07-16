@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 from PyPDF2 import PdfReader
@@ -35,10 +36,10 @@ def extract_organize_pages(pdf_name: str, index_file_name: str) -> None:
             f.write(content)
 
 if __name__ == "__main__":
-    extract_organize_pages("sample.pdf", "index.json")
+    parser = argparse.ArgumentParser(description='Extract text from PDF')
+    parser.add_argument('--pdf', type=str, required=True, help='Path to the PDF file to extract text from')
+    parser.add_argument('--index', type=str, required=True, help='Path to the page index JSON file')
 
+    args = parser.parse_args()
 
-
-
-
-
+    extract_organize_pages(args.pdf, args.index)

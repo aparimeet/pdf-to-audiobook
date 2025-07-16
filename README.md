@@ -31,6 +31,11 @@ To stitch together the generated WAV files, install [FFmpeg](https://ffmpeg.org/
 
 ## Usage
 
+Run the extract text script with pdf and index specified:
+```bash
+python3 extract_text.py --pdf <path to PDF file> --index <path to page index json>
+```
+
 Run the TTS conversion:
 ```bash
 python3 tts.py
