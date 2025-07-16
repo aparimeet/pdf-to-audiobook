@@ -31,11 +31,47 @@ To stitch together the generated WAV files, install [FFmpeg](https://ffmpeg.org/
 
 ## Usage
 
-Run the extract text script with pdf and index specified:
+### 1. Create an Index File
+Create a JSON file that defines the sections of your PDF with their corresponding page ranges. The file should follow this example format:
+
+```json
+{
+    "Prologue" : {
+        "start" : 6,
+        "end" : 8
+    },
+    "Chapter 1" : {
+        "start" : 11,
+        "end" : 56
+    },
+    "Chapter 2" : {
+        "start" : 58,
+        "end" : 148
+    },
+    "Chapter 3" : {
+        "start" : 150,
+        "end" : 185
+    },
+    "Chapter 4" : {
+        "start" : 187,
+        "end" : 255
+    },
+    "Chapter 5" : {
+        "start" : 257,
+        "end" : 353
+    }
+}
+```
+
+Each key represents a chapter or section name, with `start` and `end` values indicating the page numbers for that section.
+
+### 2. Extract Text
+Run the extract text script with your PDF and index file:
 ```bash
 python3 extract_text.py --pdf <path to PDF file> --index <path to page index json>
 ```
 
+### 3. Generate Audio
 Run the TTS conversion:
 ```bash
 python3 tts.py
