@@ -13,7 +13,7 @@ A project to convert PDFs into audiobooks using text-to-speech technology.
 Visit [PyTorch official website](https://pytorch.org/) for installation instructions.
 
 ### 2. Install Text-to-Speech Model
-This project uses the [Suno Bark TTS model](https://huggingface.co/suno/bark) from Hugging Face.
+This project uses the [Kokoro-82M TTS model](https://huggingface.co/hexgrad/Kokoro-82M) from Hugging Face. Kokoro is an open-weight TTS model with 82 million parameters that delivers high-quality audio while being lightweight and cost-efficient.
 
 ### 3. Hugging Face Authentication
 Before running the TTS script, you need to authenticate with Hugging Face:
