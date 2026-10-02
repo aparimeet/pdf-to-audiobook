@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.py[cod]
+.python-version
+parsed_text/
+audio_chunks/
+audio_chunks_legacy/
+audio_files/
+*.wav
+!examples/sample.pdf
+.huggingface/
+.cache/
+dist/
+build/
+*.egg-info/

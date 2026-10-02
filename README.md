@@ -1,78 +1,84 @@
 # PDF to Audiobook
 
-A project to convert PDFs into audiobooks using text-to-speech technology.
+Convert a PDF into a spoken audiobook with [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M), an open-weight text-to-speech model.
 
-## System Requirements
+## Stack
 
-- **CPU**: Tested on 64-bit AMD64 CPU with 16GB RAM
-- **Python**: Version 3.12.1
+- **Python** 3.12
+- **PyPDF2** for text extraction
+- **Kokoro** + **PyTorch** for TTS
+- **soundfile** / **NumPy** for WAV stitching
 
-## Installation
+## Setup
 
-### 1. Install PyTorch
-Visit [PyTorch official website](https://pytorch.org/) for installation instructions.
+```bash
+# 1. Create a virtualenv and install PyTorch for your platform:
+#    https://pytorch.org/
+python3 -m venv .venv
+source .venv/bin/activate
+pip install torch
 
-### 2. Install Text-to-Speech Model
-This project uses the [Kokoro-82M TTS model](https://huggingface.co/hexgrad/Kokoro-82M) from Hugging Face. Kokoro is an open-weight TTS model with 82 million parameters that delivers high-quality audio while being lightweight and cost-efficient.
+# 2. Install the remaining dependencies
+pip install -r requirements.txt
 
-### 3. Hugging Face Authentication
-Before running the TTS script, you need to authenticate with Hugging Face:
-
-```python
-python3
->>> from huggingface_hub import login
->>> login()
-# Enter your Hugging Face token when prompted
+# 3. (Optional) Log in to Hugging Face if model downloads require it
+python -c "from huggingface_hub import login; login()"
 ```
 
-## Audio Processing
+## Page index
 
-To stitch together the generated WAV files, install [FFmpeg](https://ffmpeg.org/).
-
-## Usage
-
-### 1. Create an Index File
-Create a JSON file that defines the sections of your PDF with their corresponding page ranges. The file should follow this example format:
+Create a JSON file that maps chapter names to page ranges. Values are **0-based**
+indexes into the PDF (page 0 is the first page). Pass `--one-based` if you prefer
+printed page numbers starting at 1.
 
 ```json
 {
-    "Prologue" : {
-        "start" : 6,
-        "end" : 8
-    },
-    "Chapter 1" : {
-        "start" : 11,
-        "end" : 56
-    },
-    "Chapter 2" : {
-        "start" : 58,
-        "end" : 148
-    },
-    "Chapter 3" : {
-        "start" : 150,
-        "end" : 185
-    },
-    "Chapter 4" : {
-        "start" : 187,
-        "end" : 255
-    },
-    "Chapter 5" : {
-        "start" : 257,
-        "end" : 353
-    }
+  "Prologue": { "start": 6, "end": 8 },
+  "Chapter 1": { "start": 11, "end": 56 }
 }
 ```
 
-Each key represents a chapter or section name, with `start` and `end` values indicating the page numbers for that section.
+## Usage
 
-### 2. Extract Text
-Run the extract text script with your PDF and index file:
+### One command
+
 ```bash
-python3 extract_text.py --pdf <path to PDF file> --index <path to page index json>
+python main.py all --pdf book.pdf --index chapters.json --output audiobook.wav
 ```
 
-### 3. Generate Audio
-Run the TTS conversion:
+### Step by step
+
 ```bash
-python3 tts.py
+python main.py extract --pdf book.pdf --index chapters.json
+python main.py speak --voice af_heart --speed 0.95
+python main.py combine --output audiobook.wav
 ```
+
+The individual scripts (`extract_text.py`, `tts.py`, `combine_wavs.py`) still work
+and accept the same flags.
+
+### Useful options
+
+| Flag | Meaning |
+|------|---------|
+| `--voice af_heart` | Kokoro voice (default: `af_heart`) |
+| `--lang a` / `b` | American / British English |
+| `--speed 0.95` | Slightly slower narration for clarity |
+| `--one-based` | Treat index pages as 1-based |
+| `--write-chunks` | Also save per-paragraph WAVs |
+
+## What improved
+
+- **Simpler flow**: one `main.py` entry point runs extract → speak → combine.
+- **Cleaner speech**: PDF line-wraps, hyphen breaks, watermarks, and bare page
+  numbers are removed before synthesis; text is split on paragraphs/sentences
+  for steadier prosody.
+- **Better TTS defaults**: transformer G2P (`trf=True`), `af_heart` voice, and a
+  slightly slower default speed.
+- **Reliable stitching**: chapter audio is concatenated with NumPy/soundfile
+  (no FFmpeg required). Short pauses are inserted between chunks and chapters.
+- **Leaner deps**: `requirements.txt` lists only what the project imports.
+
+## System notes
+
+Tested with Python 3.12 and a 64-bit CPU. A GPU speeds up Kokoro but is optional.
